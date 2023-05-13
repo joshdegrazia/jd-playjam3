@@ -16,11 +16,11 @@ frames 1 and 2 to be used.
 Must call BlinkerSprite.updateAll() in the main loop for any animations to play.
 
 ]]
-function BlinkerSprite:init(imageTable, blinker)
-	assert(imageTable)
-	self.imageTable = imageTable;
+function BlinkerSprite:init(spritePath, blinker)
+	self.imageTable = playdate.graphics.imagetable.new(spritePath);
+	assert(self.imageTable);
 	
-	self.sprite = playdate.graphics.sprite.new(imageTable:getImage(1));
+	self.sprite = playdate.graphics.sprite.new(self.imageTable:getImage(1));
 	self.sprite:add();
 
 	self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);

@@ -1,28 +1,41 @@
-import "dvd" -- DEMO
-local dvd = dvd(1, -1) -- DEMO
+import "CoreLibs/object"
+import "CoreLibs/sprites"
+import "CoreLibs/graphics"
+import "CoreLibs/animation"
 
-local gfx <const> = playdate.graphics
-local font = gfx.font.new('font/Mini Sans 2X') -- DEMO
+import "scripts/blinker-sprite"
 
-local function loadGame()
-	playdate.display.setRefreshRate(50) -- Sets framerate to 50 fps
-	math.randomseed(playdate.getSecondsSinceEpoch()) -- seed for math.random
-	gfx.setFont(font) -- DEMO
-end
+local path = "assets/sprites/"
 
-local function updateGame()
-	dvd:update() -- DEMO
-end
+local noMaidens = BlinkerSprite(path .. "no-maidens");
+noMaidens.sprite:moveTo(200, 120);
 
-local function drawGame()
-	gfx.clear() -- Clears the screen
-	dvd:draw() -- DEMO
-end
+local wizz = BlinkerSprite(path .. "wizz");
+wizz.sprite:moveTo(200, 140);
 
-loadGame()
+local lilguy = BlinkerSprite(path .. "lilguy");
+lilguy.sprite:moveTo(200, 160);
+
+local locke = BlinkerSprite(path .. "locke");
+locke.sprite:moveTo(220, 120);
+
+local mappy = BlinkerSprite(path .. "mappy");
+mappy.sprite:moveTo(220, 140);
+
+local mimicat = BlinkerSprite(path .. "mimicat");
+mimicat.sprite:moveTo(220, 160);
+
+local seele = BlinkerSprite(path .. "seele");
+seele.sprite:moveTo(240, 120);
+
+local sneque = BlinkerSprite(path .. "sneque");
+sneque.sprite:moveTo(240, 140);
+
+local cupid = BlinkerSprite(path .. "cupid");
+cupid.sprite:moveTo(240, 160);
 
 function playdate.update()
-	updateGame()
-	drawGame()
-	playdate.drawFPS(0,0) -- FPS widget
+	playdate.graphics.animation.blinker.updateAll();
+	playdate.graphics.sprite.update();
+	BlinkerSprite.updateAll();
 end
