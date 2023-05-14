@@ -14,6 +14,8 @@ import "scripts/spawner"
 import "scripts/darkness"
 
 local flashlight = Flashlight();
+local score = {score = 0};
+local cachedScore = 0;
 local railgun = Railgun();
 local spawnerTimer = nil;
 
@@ -31,8 +33,10 @@ end
 function startGame()
 	running = true;
 	flashlight:setEnabled(true);
-	railgun:setEnabled(true);
-	spawnerTimer = playdate.timer.keyRepeatTimerWithDelay(1000, 1000, SpawnCupids);
+	score = {score = 0};
+	railgun:setEnabled(true, score);
+	cachedScore = 0;
+	spawnerTimer = playdate.timer.keyRepeatTimerWithDelay(5000, 5000, SpawnCupids);
 end
 
 function endGame()
@@ -67,6 +71,10 @@ function playdate.update()
 	if playdate.isCrankDocked() then
 		playdate.ui.crankIndicator:update();
 	end
+	if cachedScore < score["score"] then
+		cachedScore = score["score"];
+	end
+	playdate.graphics.drawText(string.format("%d", score["score"]), 5, 5)
 end
 
 function playdate.cranked(c, ac)

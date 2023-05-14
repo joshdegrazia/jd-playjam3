@@ -13,10 +13,11 @@ local speed = 8;
 local center = playdate.geometry.vector2D.new(200, 120);
 
 -- Just takes a position and a velocity.
-function Bullet:init(startPosition, direction)
+function Bullet:init(startPosition, direction, score)
     Bullet.super.init(self);
     self.position = startPosition;
     self.direction = direction:normalized();
+    self.score = score;
     local img = playdate.graphics.image.new("assets/sprites/mon");
     assert(img);
     self:setImage(img);
@@ -62,5 +63,6 @@ function Bullet:update()
             collision["other"]:remove();
         end
         self:remove();
+        self.score["score"] = self.score["score"] + len;
     end
 end

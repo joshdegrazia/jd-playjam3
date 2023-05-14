@@ -17,10 +17,11 @@ function Railgun:init()
     self.enabled = false;
 end
 
-function Railgun:setEnabled(enabled)
+function Railgun:setEnabled(enabled, score)
     if not enabled then
         self.rotation = 0;
     end
+    self.score = score
    
     self.enabled = enabled;
 end
@@ -50,7 +51,7 @@ function Railgun:update()
 
     -- if applicable, spawn ourselves a bullet
     if (playdate.buttonJustPressed(playdate.kButtonA)) then
-        Bullet(gunEdge, direction);
+        Bullet(gunEdge, direction, self.score);
     end
 end
 
