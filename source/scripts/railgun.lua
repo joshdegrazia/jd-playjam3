@@ -4,7 +4,10 @@ import "bullet"
 
 class("Railgun").extends(Object);
 
+-- the center of the screen
 local center = playdate.geometry.vector2D.new(200, 120);
+
+-- size of the gun to draw
 local length = 20;
 local width = 8;
 
