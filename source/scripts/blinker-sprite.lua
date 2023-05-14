@@ -4,9 +4,9 @@ import "CoreLibs/graphics"
 import "CoreLibs/animation"
 import "CoreLibs/timer"
 
-local sprites = {}
+local gfx = playdate.graphics
 
-class("BlinkerSprite").extends(Object);
+class("BlinkerSprite").extends(gfx.sprite);
 
 --[[
 
@@ -14,42 +14,32 @@ Composite sprite object using a blinker to flicker between two
 frames of animation. Requires an image table with two frames and assumes
 frames 1 and 2 to be used.
 
-Must call BlinkerSprite.updateAll() in the main loop for any animations to play.
-
 ]]
 function BlinkerSprite:init(spritePath, blinker)
+    BlinkerSprite.super.init(self);
     self.imageTable = playdate.graphics.imagetable.new(spritePath);
     assert(self.imageTable);
 	
-    self.sprite = playdate.graphics.sprite.new(self.imageTable:getImage(1));
-    self.sprite:setCollideRect(0,0, self.sprite:getSize());
-    self.sprite:setGroups(2); -- enemy sprites are collision group 2
-    self.sprite:setCollidesWithGroups(1); -- bullets are collision group 1
-    self.sprite:add();
+    self:setImage(self.imageTable:getImage(1));
+    self:setCollideRect(0,0, self:getSize());
+    self:setGroups(2); -- enemy sprites are collision group 2
+    self:setCollidesWithGroups(1); -- bullets are collision group 1
+    self:add();
 
     self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);
     self.blinkerValue = self.blinker.on;
     self.blinker:startLoop();
-
-    table.insert(sprites, self);
 end
 
 function BlinkerSprite:update()
+    BlinkerSprite.super.update(self);
     if self.blinker.on ~= self.blinkerValue then
         self.blinkerValue = self.blinker.on; 
 
         if self.blinker.on then
-            self.sprite:setImage(self.imageTable:getImage(1));
+            self:setImage(self.imageTable:getImage(1));
         else
-            self.sprite:setImage(self.imageTable:getImage(2));
+            self:setImage(self.imageTable:getImage(2));
         end
     end
 end
-
-function BlinkerSprite.updateAll()
-    for _, o in ipairs(sprites) do
-        o:update();
-    end
-end
-
-return BlinkerSprite
