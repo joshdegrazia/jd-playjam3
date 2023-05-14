@@ -2,6 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/animation"
+import "CoreLibs/timer"
 
 local sprites = {}
 
