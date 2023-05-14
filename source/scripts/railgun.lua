@@ -27,7 +27,7 @@ end
 
 function Railgun:onCranked(c, ac)
     if not self.enabled then
-        return;
+        return
     end
 
     self.rotation += c;

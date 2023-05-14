@@ -29,7 +29,7 @@ end
 
 function Flashlight:onCranked(c, ac)
 	if not self.enabled then
-		return
+		return;
 	end
 
 	self.rotation += c;
