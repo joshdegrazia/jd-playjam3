@@ -22,7 +22,6 @@ function Railgun.update()
 
     -- if applicable, spawn ourselves a bullet
     if (playdate.buttonJustPressed(playdate.kButtonA)) then
-        print("fire bullet");
         Bullet(gunEdge, direction);
     end
 end
