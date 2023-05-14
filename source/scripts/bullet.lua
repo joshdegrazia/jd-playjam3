@@ -2,58 +2,43 @@ import "CoreLibs/graphics"
 import "CoreLibs/object"
 import "CoreLibs/sprites"
 
-class("Bullet").extends(Object)
+local gfx = playdate.graphics
+class("Bullet").extends(gfx.sprite)
 
-local bullets = {}
-local id = 1;
 local cullingRadius = 500;
 local speed = 8;
-local trailLength = 5;
 
 local center = playdate.geometry.vector2D.new(200, 120);
 
 -- Just takes a position and a velocity.
 function Bullet:init(startPosition, direction)
+    Bullet.super.init(self);
     self.position = startPosition;
     self.direction = direction:normalized();
     local img = playdate.graphics.image.new("assets/sprites/mon");
     assert(img);
-    self.sprite = playdate.graphics.sprite.new(img);
-    self.sprite:add();
-    self.sprite:setGroups(1); -- bullets are collision group 1
-    self.sprite:setCollidesWithGroups(2); -- enemy sprites are collision group 1
-    self.sprite:setCollideRect(0,0, self.sprite:getSize());
-    self.sprite:moveTo(self.position.x, self.position.y);
-    
-    -- Note down our ID so we can cull the bullet later
-    self.id = id;
-    id = id + 1;
+    self:setImage(img);
+    self:add();
+    self:setGroups(1); -- bullets are collision group 1
+    self:setCollidesWithGroups(2); -- enemy sprites are collision group 1
+    self:setCollideRect(0,0, self:getSize());
+    self:moveTo(self.position.x, self.position.y);
 
-    bullets[self.id] = self;
-
-    print("Created bullet with id " .. self.id);
 end
 
 function Bullet:update()
+    Bullet.super.update(self);
     self.position = self.position + (self.direction * speed);
 
     if (self.position - center):magnitude() > cullingRadius then
-        bullets[self.id] = nil;
-        return;
+        self:remove();
     end
 
-    local _, _, collisions, len = self.sprite:moveWithCollisions(self.position.x, self.position.y);
+    local _, _, collisions, len = self:moveWithCollisions(self.position.x, self.position.y);
     if len ~= 0 then
         for _, collision in ipairs(collisions) do
-            print(collision["other"]);
+            collision["other"]:remove();
         end
+        self:remove();
     end
 end
-
-function Bullet.updateAll()
-    for _, b in pairs(bullets) do
-        b:update();
-    end
-end
-
-return Bullet

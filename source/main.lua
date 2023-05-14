@@ -23,7 +23,6 @@ function playdate.update()
 	
 	Gear.updateAll();
 	railgun:update();
-	Bullet.updateAll();
 	
 	flashlight:update();
 end
