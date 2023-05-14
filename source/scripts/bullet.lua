@@ -1,4 +1,6 @@
+import "CoreLibs/graphics"
 import "CoreLibs/object"
+import "CoreLibs/sprites"
 
 class("Bullet").extends(Object)
 
@@ -14,6 +16,12 @@ local center = playdate.geometry.vector2D.new(200, 120);
 function Bullet:init(startPosition, direction)
     self.position = startPosition;
     self.direction = direction:normalized();
+    local img = playdate.graphics.image.new("assets/sprites/mon");
+    assert(img);
+    self.sprite = playdate.graphics.sprite.new(img);
+    self.sprite:add();
+    self.sprite:setCollideRect(0,0, self.sprite:getSize());
+    self.sprite:moveTo(self.position.x, self.position.y);
     
     -- Note down our ID so we can cull the bullet later
     self.id = id;
@@ -32,10 +40,11 @@ function Bullet:update()
         return;
     end
 
-    local trailPos = self.position - (self.direction * trailLength);
+    self.sprite:moveTo(self.position.x, self.position.y);
+    --local trailPos = self.position - (self.direction * trailLength);
 
-    playdate.graphics.setLineWidth(1);
-    playdate.graphics.drawLine(self.position.x, self.position.y, trailPos.x, trailPos.y);
+    --playdate.graphics.setLineWidth(1);
+    --playdate.graphics.drawLine(self.position.x, self.position.y, trailPos.x, trailPos.y);
 end
 
 function Bullet.updateAll()
