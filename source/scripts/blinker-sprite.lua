@@ -28,7 +28,6 @@ function BlinkerSprite:init(spritePath, blinker)
 	self.blinkerValue = self.blinker.on;
     self.blinker:startLoop();
 
-    self.dist = 100;
 	table.insert(sprites, self);
 end
 
