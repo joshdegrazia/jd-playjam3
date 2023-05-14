@@ -2,6 +2,7 @@ import "CoreLibs/object"
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/animation"
+import "CoreLibs/timer"
 
 local sprites = {}
 
@@ -27,6 +28,7 @@ function BlinkerSprite:init(spritePath, blinker)
 	self.blinkerValue = self.blinker.on;
     self.blinker:startLoop();
 
+    self.dist = 100;
 	table.insert(sprites, self);
 end
 
