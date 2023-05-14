@@ -2,6 +2,8 @@ import "CoreLibs/graphics"
 import "CoreLibs/object"
 import "CoreLibs/sprites"
 
+import "darkness"
+
 local gfx = playdate.graphics
 class("Bullet").extends(gfx.sprite)
 
@@ -24,6 +26,26 @@ function Bullet:init(startPosition, direction)
     self:setCollideRect(0,0, self:getSize());
     self:moveTo(self.position.x, self.position.y);
 
+    self.lightSourceId = Darkness.registerLightSource(self);
+    
+    -- use a flag to only draw muzzle flare once upon creation
+    self.drawMuzzleFlare = true;
+end
+
+local lightRadius = 15;
+local muzzleFlareRadius = 40;
+function Bullet:drawLight()
+    if self.drawMuzzleFlare then
+        playdate.graphics.fillCircleAtPoint(self.position.x, self.position.y, muzzleFlareRadius)
+        self.drawMuzzleFlare = false;
+    end
+
+    playdate.graphics.fillCircleAtPoint(self.position.x, self.position.y, lightRadius)
+end
+
+function Bullet:remove()
+    Darkness.deregisterLightSource(self.lightSourceId);
+    Bullet.super.remove(self);
 end
 
 function Bullet:update()

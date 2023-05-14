@@ -4,10 +4,9 @@ import "CoreLibs/graphics"
 import "CoreLibs/animation"
 
 import "gear"
+import "darkness"
 
 local center = playdate.geometry.vector2D.new(200, 120);
-local shadeCanvas = playdate.graphics.image.new(400, 240, playdate.graphics.kColorBlack);
-shadeCanvas:addMask();
 
 class("Flashlight").extends(Object)
 
@@ -23,29 +22,25 @@ local nearbyRadius = 30;
 
 function Flashlight:init()
 	self.rotation = 0;
+
+	Darkness.registerLightSource(self);
 end
 
 function Flashlight:onCranked(c, ac)
 	self.rotation += c;
 end
 
-function Flashlight:update()
-	shadeMask = shadeCanvas:getMaskImage()
-	shadeCanvas:clearMask(1);
-	playdate.graphics.pushContext(shadeMask)
-		local left = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation + width/2);
-		assert(left);
-		left:addVector(center);
+function Flashlight:drawLight()
+	local left = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation + width/2);
+	assert(left);
+	left:addVector(center);
 
-		local right = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation - width/2);
-		assert(right);
-		right:addVector(center);
+	local right = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation - width/2);
+	assert(right);
+	right:addVector(center);
 
-        playdate.graphics.fillCircleAtPoint(center.x, center.y, nearbyRadius);
-		playdate.graphics.fillTriangle(center.x, center.y, left.x, left.y, right.x, right.y)
-	playdate.graphics.popContext()
-
-	shadeCanvas:drawBlurred(0, 0, 3, 4, playdate.graphics.image.kDitherTypeBayer2x2);
+	playdate.graphics.fillCircleAtPoint(center.x, center.y, nearbyRadius);
+	playdate.graphics.fillTriangle(center.x, center.y, left.x, left.y, right.x, right.y)
 end
 
 return Flashlight

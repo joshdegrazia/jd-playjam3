@@ -10,11 +10,12 @@ import "scripts/bullet"
 import "scripts/flashlight"
 import "scripts/railgun"
 import "scripts/spawner"
+import "scripts/darkness"
 
 playdate.timer.keyRepeatTimerWithDelay(1000, 1000, SpawnCupids);
 
-local flashlight = Flashlight(flashlightGear);
-local railgun = Railgun(railgunMoveGear, railgunShootGear);
+local flashlight = Flashlight();
+local railgun = Railgun();
 
 function playdate.update()
 	playdate.timer.updateTimers();
@@ -23,8 +24,7 @@ function playdate.update()
 	
 	Gear.updateAll();
 	railgun:update();
-	
-	flashlight:update();
+	Darkness.update();
 end
 
 function playdate.cranked(c, ac)

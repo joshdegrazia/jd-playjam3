@@ -1,6 +1,7 @@
 import "CoreLibs/object"
 
 import "bullet"
+import "darkness"
 
 class("Railgun").extends(Object);
 
@@ -11,13 +12,7 @@ local center = playdate.geometry.vector2D.new(200, 120);
 local length = 20;
 local width = 8;
 
--- % of maxSpeed our gear must be at to start firing
-local fireThreshold = 0.3;
-local maxFireRate = 15;
-
-function Railgun:init(moveGear, shootGear)
-    self.moveGear = moveGear;
-    self.shootGear = shootGear;
+function Railgun:init()
     self.rotation = 0;
 end
 
