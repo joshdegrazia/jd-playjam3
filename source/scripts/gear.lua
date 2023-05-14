@@ -32,13 +32,13 @@ function Gear:update()
 end
 
 function Gear:onCranked(c, ac)
-    self.speed = math.min(math.max(self.speed + (c * self.crankFactor), self.minSpeed), self.maxSpeed);
+    self.speed = math.min(math.max(self.speed + (ac * self.crankFactor), self.minSpeed), self.maxSpeed);
 end
 
 function Gear.updateAll()
     for _, g in ipairs(gears) do
         g:update();
-    end 
+    end
 end
 
 return Gear

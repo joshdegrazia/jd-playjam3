@@ -13,9 +13,8 @@ import "scripts/spawner"
 
 playdate.timer.keyRepeatTimerWithDelay(1000, 1000, SpawnCupids);
 
-local flashlightGear = Gear(4, -4, 0.03, 0.1);
-
 local flashlight = Flashlight(flashlightGear);
+local railgun = Railgun(railgunMoveGear, railgunShootGear);
 
 function playdate.update()
 	playdate.timer.updateTimers();
@@ -23,7 +22,7 @@ function playdate.update()
 	playdate.graphics.sprite.update();
 	
 	Gear.updateAll();
-	Railgun.update();
+	railgun:update();
 	BlinkerSprite.updateAll();
 	Bullet.updateAll();
 	
@@ -32,10 +31,8 @@ end
 
 function playdate.cranked(c, ac)
 	if playdate.buttonIsPressed(playdate.kButtonUp) then
-		flashlightGear:onCranked(c, ac);
+		flashlight:onCranked(c, ac);
 	elseif playdate.buttonIsPressed(playdate.kButtonLeft) then
-
-	elseif playdate.buttonIsPressed(playdate.kButtonRight) then
-
+		railgun:onCranked(c, ac);
 	end
 end

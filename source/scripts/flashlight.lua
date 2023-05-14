@@ -21,20 +21,23 @@ local flashlightSize = 300;
 -- draws a small circle near the player to denote their vision
 local nearbyRadius = 30;
 
-function Flashlight:init(gear)
-	self.gear = gear;
+function Flashlight:init()
+	self.rotation = 0;
+end
+
+function Flashlight:onCranked(c, ac)
+	self.rotation += c;
 end
 
 function Flashlight:update()
 	shadeMask = shadeCanvas:getMaskImage()
 	shadeCanvas:clearMask(1);
 	playdate.graphics.pushContext(shadeMask)
-		
-		local left = playdate.geometry.vector2D.newPolar(flashlightSize, self.gear:getRotation() + width/2);
+		local left = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation + width/2);
 		assert(left);
 		left:addVector(center);
 
-		local right = playdate.geometry.vector2D.newPolar(flashlightSize, self.gear:getRotation() - width/2);
+		local right = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation - width/2);
 		assert(right);
 		right:addVector(center);
 

@@ -11,10 +11,24 @@ local center = playdate.geometry.vector2D.new(200, 120);
 local length = 20;
 local width = 8;
 
-function Railgun.update()
+-- % of maxSpeed our gear must be at to start firing
+local fireThreshold = 0.3;
+local maxFireRate = 15;
+
+function Railgun:init(moveGear, shootGear)
+    self.moveGear = moveGear;
+    self.shootGear = shootGear;
+    self.rotation = 0;
+end
+
+function Railgun:onCranked(c, ac)
+    self.rotation += c;
+end
+
+function Railgun:update()
 
     -- draw our beautiful gun
-    local direction = playdate.geometry.vector2D.newPolar(length, playdate.getCrankPosition());
+    local direction = playdate.geometry.vector2D.newPolar(length, self.rotation);
     assert(direction);
 
     local gunEdge = center + direction;
