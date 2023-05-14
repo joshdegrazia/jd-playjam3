@@ -27,5 +27,5 @@ function SpawnCupids()
         end
         blink:moveTo(new_x, new_y);
     end
-    playdate.timer.keyRepeatTimerWithDelay(1000, 1000, moveSprite);
+    blink.timer = playdate.timer.keyRepeatTimerWithDelay(1000, 1000, moveSprite);
 end

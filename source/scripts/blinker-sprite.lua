@@ -29,6 +29,17 @@ function BlinkerSprite:init(spritePath, blinker)
     self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);
     self.blinkerValue = self.blinker.on;
     self.blinker:startLoop();
+    self.timer = nil;
+end
+
+function BlinkerSprite:remove()
+    if self.timer then
+        self.timer:remove();
+    else
+        print("UH OH BIG OOPSIE");
+    end
+
+    BlinkerSprite.super.remove(self);
 end
 
 function BlinkerSprite:update()
