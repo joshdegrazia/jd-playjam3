@@ -22,15 +22,32 @@ local nearbyRadius = 30;
 
 function Flashlight:init()
 	self.rotation = 0;
+	self.enabled = false;
 
 	Darkness.registerLightSource(self);
 end
 
 function Flashlight:onCranked(c, ac)
+	if not self.enabled then
+		return
+	end
+
 	self.rotation += c;
 end
 
+function Flashlight:setEnabled(enabled)
+	if not enabled then
+		self.rotation = 0
+	end
+
+	self.enabled = enabled;
+end
+
 function Flashlight:drawLight()
+	if not self.enabled then
+		return;
+	end
+
 	local left = playdate.geometry.vector2D.newPolar(flashlightSize, self.rotation + width/2);
 	assert(left);
 	left:addVector(center);

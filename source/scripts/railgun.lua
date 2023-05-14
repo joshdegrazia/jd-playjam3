@@ -14,13 +14,29 @@ local width = 8;
 
 function Railgun:init()
     self.rotation = 0;
+    self.enabled = false;
+end
+
+function Railgun:setEnabled(enabled)
+    if not enabled then
+        self.rotation = 0;
+    end
+   
+    self.enabled = enabled;
 end
 
 function Railgun:onCranked(c, ac)
+    if not self.enabled then
+        return;
+    end
+
     self.rotation += c;
 end
 
 function Railgun:update()
+    if not self.enabled then
+        return;
+    end
 
     -- draw our beautiful gun
     local direction = playdate.geometry.vector2D.newPolar(length, self.rotation);
