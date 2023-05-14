@@ -18,17 +18,20 @@ Must call BlinkerSprite.updateAll() in the main loop for any animations to play.
 
 ]]
 function BlinkerSprite:init(spritePath, blinker)
-	self.imageTable = playdate.graphics.imagetable.new(spritePath);
-	assert(self.imageTable);
+    self.imageTable = playdate.graphics.imagetable.new(spritePath);
+    assert(self.imageTable);
 	
-	self.sprite = playdate.graphics.sprite.new(self.imageTable:getImage(1));
-	self.sprite:add();
+    self.sprite = playdate.graphics.sprite.new(self.imageTable:getImage(1));
+    self.sprite:setCollideRect(0,0, self.sprite:getSize());
+    self.sprite:setGroups(2); -- enemy sprites are collision group 2
+    self.sprite:setCollidesWithGroups(1); -- bullets are collision group 1
+    self.sprite:add();
 
-	self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);
-	self.blinkerValue = self.blinker.on;
+    self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);
+    self.blinkerValue = self.blinker.on;
     self.blinker:startLoop();
 
-	table.insert(sprites, self);
+    table.insert(sprites, self);
 end
 
 function BlinkerSprite:update()

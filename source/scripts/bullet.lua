@@ -20,6 +20,8 @@ function Bullet:init(startPosition, direction)
     assert(img);
     self.sprite = playdate.graphics.sprite.new(img);
     self.sprite:add();
+    self.sprite:setGroups(1); -- bullets are collision group 1
+    self.sprite:setCollidesWithGroups(2); -- enemy sprites are collision group 1
     self.sprite:setCollideRect(0,0, self.sprite:getSize());
     self.sprite:moveTo(self.position.x, self.position.y);
     
@@ -40,11 +42,12 @@ function Bullet:update()
         return;
     end
 
-    self.sprite:moveTo(self.position.x, self.position.y);
-    --local trailPos = self.position - (self.direction * trailLength);
-
-    --playdate.graphics.setLineWidth(1);
-    --playdate.graphics.drawLine(self.position.x, self.position.y, trailPos.x, trailPos.y);
+    local _, _, collisions, len = self.sprite:moveWithCollisions(self.position.x, self.position.y);
+    if len ~= 0 then
+        for _, collision in ipairs(collisions) do
+            print(collision["other"]);
+        end
+    end
 end
 
 function Bullet.updateAll()
