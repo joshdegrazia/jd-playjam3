@@ -22,8 +22,10 @@ local running = false;
 playdate.ui.crankIndicator:start();
 
 function showInstructions()
+	local drawMode = playdate.graphics.getImageDrawMode();
 	playdate.graphics.setImageDrawMode(playdate.graphics.kDrawModeFillWhite);
-	playdate.graphics.drawText("normal *bold* _italic_", 100, 100)
+	playdate.graphics.drawText("A: Shoot\nB: Start/Stop Game\nUp+Crank: Rotate Flashlight\nLeft+Crank: Rotate Gun", 10, 10)
+	playdate.graphics.setImageDrawMode(drawMode);
 end
 
 function startGame()
