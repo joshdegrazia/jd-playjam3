@@ -23,7 +23,7 @@ function BlinkerSprite:init(spritePath, blinker)
     self:setImage(self.imageTable:getImage(1));
     self:setCollideRect(0,0, self:getSize());
     self:setGroups(2); -- enemy sprites are collision group 2
-    self:setCollidesWithGroups(1); -- bullets are collision group 1
+    self:setCollidesWithGroups(3); -- railgun
     self:add();
 
     self.blinker = blinker or playdate.graphics.animation.blinker.new(200, 200);

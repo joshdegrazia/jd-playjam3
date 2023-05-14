@@ -1,4 +1,5 @@
 import "CoreLibs/object"
+import "CoreLibs/sprites"
 
 import "bullet"
 import "darkness"
@@ -15,6 +16,12 @@ local width = 8;
 function Railgun:init()
     self.rotation = 0;
     self.enabled = false;
+    self.hurtbox = playdate.graphics.sprite.new();
+    self.hurtbox:setCollideRect(-15,-15, 30, 30)
+    self.hurtbox:setGroups(3); -- player is group 3
+    self.hurtbox:setCollidesWithGroups(2); -- enemy sprites are collision group 2
+    self.hurtbox:moveTo(200,120);
+    self.hurtbox:add();
 end
 
 function Railgun:setEnabled(enabled, score)

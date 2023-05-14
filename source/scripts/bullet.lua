@@ -23,7 +23,7 @@ function Bullet:init(startPosition, direction, score)
     self:setImage(img);
     self:add();
     self:setGroups(1); -- bullets are collision group 1
-    self:setCollidesWithGroups(2); -- enemy sprites are collision group 1
+    self:setCollidesWithGroups(2); -- enemy sprites are collision group 2
     self:setCollideRect(0,0, self:getSize());
     self:moveTo(self.position.x, self.position.y);
 
