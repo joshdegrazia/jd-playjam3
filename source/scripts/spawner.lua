@@ -10,9 +10,9 @@ function SpawnCupids()
     local x = spawnXCoord[math.random(3)]
     local y = spawnYCoord[math.random(3)]
 	local blink = BlinkerSprite(path .. "cupid")
-    blink.sprite:moveTo(x,y);
+    blink:moveTo(x,y);
     function moveSprite()
-        local x, y = blink.sprite:getPosition();
+        local x, y = blink:getPosition();
         local new_x, new_y = x, y;
         local moveDist = 10
         if x < 200 and x + moveDist < 200 then
@@ -25,7 +25,7 @@ function SpawnCupids()
         elseif y > 120 and y - moveDist > 120 then
             new_y = y - moveDist
         end
-        blink.sprite:moveTo(new_x, new_y);
+        blink:moveTo(new_x, new_y);
     end
     playdate.timer.keyRepeatTimerWithDelay(1000, 1000, moveSprite);
 end

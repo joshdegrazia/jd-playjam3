@@ -1,47 +1,44 @@
+import "CoreLibs/graphics"
 import "CoreLibs/object"
+import "CoreLibs/sprites"
 
-class("Bullet").extends(Object)
+local gfx = playdate.graphics
+class("Bullet").extends(gfx.sprite)
 
-local bullets = {}
-local id = 1;
 local cullingRadius = 500;
 local speed = 8;
-local trailLength = 5;
 
 local center = playdate.geometry.vector2D.new(200, 120);
 
 -- Just takes a position and a velocity.
 function Bullet:init(startPosition, direction)
+    Bullet.super.init(self);
     self.position = startPosition;
     self.direction = direction:normalized();
-    
-    -- Note down our ID so we can cull the bullet later
-    self.id = id;
-    id = id + 1;
+    local img = playdate.graphics.image.new("assets/sprites/mon");
+    assert(img);
+    self:setImage(img);
+    self:add();
+    self:setGroups(1); -- bullets are collision group 1
+    self:setCollidesWithGroups(2); -- enemy sprites are collision group 1
+    self:setCollideRect(0,0, self:getSize());
+    self:moveTo(self.position.x, self.position.y);
 
-    bullets[self.id] = self;
-
-    print("Created bullet with id " .. self.id);
 end
 
 function Bullet:update()
+    Bullet.super.update(self);
     self.position = self.position + (self.direction * speed);
 
     if (self.position - center):magnitude() > cullingRadius then
-        bullets[self.id] = nil;
-        return;
+        self:remove();
     end
 
-    local trailPos = self.position - (self.direction * trailLength);
-
-    playdate.graphics.setLineWidth(1);
-    playdate.graphics.drawLine(self.position.x, self.position.y, trailPos.x, trailPos.y);
-end
-
-function Bullet.updateAll()
-    for _, b in pairs(bullets) do
-        b:update();
+    local _, _, collisions, len = self:moveWithCollisions(self.position.x, self.position.y);
+    if len ~= 0 then
+        for _, collision in ipairs(collisions) do
+            collision["other"]:remove();
+        end
+        self:remove();
     end
 end
-
-return Bullet
